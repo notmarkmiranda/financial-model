@@ -112,7 +112,18 @@ export default function App() {
     };
     const totalStartup = Object.values(startup).reduce((a, b) => a + b, 0);
 
-    const paybackMonths = monthlyProfit > 0 ? totalStartup / monthlyProfit : Infinity;
+    // Payback calculated with ramp-up
+    let paybackMonths = Infinity;
+    let cumForPayback = -totalStartup;
+    for (let i = 1; i <= 120; i++) {
+      const ramp = Math.min(1, i / rampMonths);
+      const moRev = (hourlyRevNet * ramp) + (membershipRev * ramp);
+      cumForPayback += moRev - totalMonthlyExp;
+      if (cumForPayback >= 0) {
+        paybackMonths = i;
+        break;
+      }
+    }
 
     const blendedRate = totalBookedHrsDay > 0 ? hourlyRevGross / (totalBookedHrsDay * DAYS) : 0;
     const expenseGap = Math.max(0, totalMonthlyExp - membershipRev);
@@ -218,7 +229,7 @@ export default function App() {
               { label: "Monthly Revenue", val: $(m.monthlyRev), color: "#38bdf8" },
               { label: "Monthly Profit", val: $(m.monthlyProfit), color: profitColor },
               { label: "Total Startup Cost", val: $(m.totalStartup), color: "#f59e0b" },
-              { label: "Payback Period", val: m.paybackMonths === Infinity ? "N/A" : `${m.paybackMonths.toFixed(1)} mo`, color: m.paybackMonths <= 24 ? "#22c55e" : "#ef4444" }
+              { label: "Payback Period", val: m.paybackMonths === Infinity ? "N/A" : `${m.paybackMonths} mo`, color: m.paybackMonths <= 24 ? "#22c55e" : "#ef4444" }
             ].map((c, i) => (
               <div key={i} style={{ background: "#1e293b", borderRadius: 12, padding: 16, textAlign: "center" }}>
                 <div style={{ fontSize: 11, color: "#64748b", marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.5 }}>{c.label}</div>
