@@ -174,15 +174,15 @@ export default function App() {
           </Section>
 
           <Section title="Hourly Rates">
-            <Slider label="Peak (5pm-11pm)" value={peakRate} onChange={setPeakRate} min={30} max={90} step={5} format={v => `${$(v)}/hr`} />
-            <Slider label="Off-Peak (6am-5pm)" value={offPeakRate} onChange={setOffPeakRate} min={15} max={60} step={5} format={v => `${$(v)}/hr`} />
-            <Slider label="Late Night (11pm-6am)" value={lateRate} onChange={setLateRate} min={10} max={45} step={5} format={v => `${$(v)}/hr`} />
+            <Slider label="Peak (5pm-11pm)" value={peakRate} onChange={setPeakRate} min={10} max={90} step={5} format={v => `${$(v)}/hr`} />
+            <Slider label="Off-Peak (6am-5pm)" value={offPeakRate} onChange={setOffPeakRate} min={10} max={90} step={5} format={v => `${$(v)}/hr`} />
+            <Slider label="Late Night (11pm-6am)" value={lateRate} onChange={setLateRate} min={10} max={90} step={5} format={v => `${$(v)}/hr`} />
           </Section>
 
           <Section title="Occupancy Rates">
-            <Slider label="Peak" value={peakOcc} onChange={setPeakOcc} min={10} max={100} step={5} format={v => `${v}%`} />
-            <Slider label="Off-Peak" value={offPeakOcc} onChange={setOffPeakOcc} min={5} max={80} step={5} format={v => `${v}%`} />
-            <Slider label="Late Night" value={lateOcc} onChange={setLateOcc} min={0} max={50} step={5} format={v => `${v}%`} />
+            <Slider label="Peak" value={peakOcc} onChange={setPeakOcc} min={0} max={100} step={5} format={v => `${v}%`} />
+            <Slider label="Off-Peak" value={offPeakOcc} onChange={setOffPeakOcc} min={0} max={100} step={5} format={v => `${v}%`} />
+            <Slider label="Late Night" value={lateOcc} onChange={setLateOcc} min={0} max={100} step={5} format={v => `${v}%`} />
             <div style={{ background: "#1e293b", padding: 10, borderRadius: 8, marginTop: 8 }}>
               <Row label="Blended occupancy" value={`${m.blendedOcc}%`} />
               <Row label="Booked hours/day" value={`${m.totalBookedHrsDay} of 24`} />
