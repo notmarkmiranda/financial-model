@@ -42,6 +42,7 @@ export default function App() {
   const [memberPrice, setMemberPrice] = useState(150);
   const [memberCount, setMemberCount] = useState(0);
   const [memberUtil, setMemberUtil] = useState(50);
+  const [memberDailyHrs, setMemberDailyHrs] = useState(1.5);
   const [memberPeakPct, setMemberPeakPct] = useState(40);
   const [rampMonths, setRampMonths] = useState(3);
 
@@ -69,7 +70,7 @@ export default function App() {
     const hourlyRevGross = peakRevMonth + offPeakRevMonth + lateRevMonth;
 
     const membershipRev = memberPrice * memberCount;
-    const memberHrsPerDayRaw = 1.5 * memberCount * (memberUtil / 100);
+    const memberHrsPerDayRaw = memberDailyHrs * memberCount * (memberUtil / 100);
     const memberHrsPerDay = Math.min(memberHrsPerDayRaw, 24);
     const capped = memberHrsPerDayRaw > 24;
 
@@ -142,7 +143,7 @@ export default function App() {
       cashFlow
     };
   }, [simTier, rent, buildout, peakRate, offPeakRate, lateRate, peakOcc, offPeakOcc, lateOcc,
-      memberPrice, memberCount, memberUtil, memberPeakPct, rampMonths]);
+      memberPrice, memberCount, memberUtil, memberPeakPct, memberDailyHrs, rampMonths]);
 
   const profitColor = m.monthlyProfit >= 0 ? "#22c55e" : "#ef4444";
   const memberColor = m.netMemberImpact >= 0 ? "#22c55e" : "#ef4444";
@@ -188,7 +189,8 @@ export default function App() {
             </div>
           </Section>
 
-          <Section title="Memberships (1.5 hrs/day cap)">
+          <Section title="Memberships">
+            <Slider label="Daily hours cap" value={memberDailyHrs} onChange={setMemberDailyHrs} min={1} max={3} step={0.5} format={v => `${v} hrs/day`} />
             <Slider label="Monthly Price" value={memberPrice} onChange={setMemberPrice} min={50} max={500} step={10} format={v => `${$(v)}/mo`} />
             <Slider label="Number of Members" value={memberCount} onChange={setMemberCount} min={0} max={100} step={1} format={v => v} />
             <Slider label="Avg utilization" value={memberUtil} onChange={setMemberUtil} min={10} max={100} step={5} format={v => `${v}%`} />
