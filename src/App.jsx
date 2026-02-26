@@ -269,9 +269,9 @@ export default function App() {
           </Section>
 
           <Section title="Monthly Revenue Breakdown">
-            <Row label="Peak hours (6hrs/day)" value={$(m.peakRevMonth)} />
-            <Row label="Off-peak hours (11hrs/day)" value={$(m.offPeakRevMonth)} />
-            <Row label="Late night hours (7hrs/day)" value={$(m.lateRevMonth)} />
+            <Row label={`Peak hours (6hrs/day${bayCount > 1 ? ` × ${bayCount} bays` : ""})`} value={$(m.peakRevMonth * bayCount)} />
+            <Row label={`Off-peak hours (11hrs/day${bayCount > 1 ? ` × ${bayCount} bays` : ""})`} value={$(m.offPeakRevMonth * bayCount)} />
+            <Row label={`Late night hours (7hrs/day${bayCount > 1 ? ` × ${bayCount} bays` : ""})`} value={$(m.lateRevMonth * bayCount)} />
             {memberCount > 0 && (
               <>
                 <Row label="Displaced by members" value={`-${$(m.displacedRevMonth)}`} color="#f87171" />
