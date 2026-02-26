@@ -169,21 +169,21 @@ export default function App() {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 24 }}>
         <div>
           <Section title="Number of Bays">
-  <div style={{ display: "flex", gap: 8, marginBottom: 4 }}>
-    {[1, 2, 3].map(n => (
-      <button key={n} onClick={() => setBayCount(n)}
-        style={{
-          padding: "8px 14px", borderRadius: 8,
-          border: bayCount === n ? "2px solid #22c55e" : "1px solid #334155",
-          background: bayCount === n ? "#14532d" : "#1e293b",
-          color: bayCount === n ? "#22c55e" : "#94a3b8",
-          fontSize: 13, fontWeight: 600, cursor: "pointer", flex: 1
-        }}>
-        {n} {n === 1 ? "Bay" : "Bays"}
-      </button>
-    ))}
-  </div>
-</Section>
+            <div style={{ display: "flex", gap: 8, marginBottom: 4 }}>
+              {[1, 2, 3].map(n => (
+                <button key={n} onClick={() => setBayCount(n)}
+                  style={{
+                    padding: "8px 14px", borderRadius: 8,
+                    border: bayCount === n ? "2px solid #22c55e" : "1px solid #334155",
+                    background: bayCount === n ? "#14532d" : "#1e293b",
+                    color: bayCount === n ? "#22c55e" : "#94a3b8",
+                    fontSize: 13, fontWeight: 600, cursor: "pointer", flex: 1
+                  }}>
+                  {n} {n === 1 ? "Bay" : "Bays"}
+                </button>
+              ))}
+            </div>
+          </Section>
 
           <Section title="Simulator Tier">
             <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
