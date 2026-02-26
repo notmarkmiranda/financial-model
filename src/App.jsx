@@ -61,6 +61,7 @@ export default function App() {
     const LATE_HRS = 7;
     const DAYS = 30.4;
     const SIM_COST = simTiers[simTier].cost;
+    const totalMonthlyRent = ((rentPerSqft + nnnPerSqft) * sqft) / 12;
 
     const peakBookedHrsDay = PEAK_HRS * (peakOcc / 100);
     const offPeakBookedHrsDay = OFFPEAK_HRS * (offPeakOcc / 100);
@@ -90,7 +91,7 @@ export default function App() {
     const netMemberImpact = membershipRev - displacedRevMonth;
 
     const expenses = {
-      rent: rent * bayCount,
+      rent: totalMonthlyRent * bayCount,
       utilities: 350 * bayCount,
       internet: 100,
       insurance: 200 + 50 * bayCount,
@@ -107,7 +108,7 @@ export default function App() {
     const startup = {
       simulator: SIM_COST * bayCount,
       buildout: buildout * bayCount,
-      leaseDeposit: rent * 3,
+      leaseDeposit: totalMonthlyRent * 3,
       legal: 3000,
       tech: 2500,
       signage: 3000,
@@ -155,7 +156,7 @@ export default function App() {
       startup, totalStartup,
       paybackMonths, blendedRate, breakEvenHrsDay, breakEvenOccPct,
       blendedOcc, totalBookedHrsDay: totalBookedHrsDay.toFixed(1),
-      cashFlow
+      cashFlow, totalMonthlyRent
     };
   }, [simTier, rentPerSqft, sqft, nnnPerSqft, buildout, peakRate, offPeakRate, lateRate, peakOcc, offPeakOcc, lateOcc,
       memberPrice, memberCount, memberUtil, memberPeakPct, memberDailyHrs, rampMonths, bayCount]);
