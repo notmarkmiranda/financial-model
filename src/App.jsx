@@ -45,6 +45,7 @@ export default function App() {
   const [memberDailyHrs, setMemberDailyHrs] = useState(1.5);
   const [memberPeakPct, setMemberPeakPct] = useState(40);
   const [rampMonths, setRampMonths] = useState(3);
+  const [bayCount, setBayCount] = useState(1);
 
   const simTiers = {
     budget: { label: "Budget (SkyTrak, TruGolf)", cost: 10000 },
@@ -154,7 +155,7 @@ export default function App() {
       cashFlow
     };
   }, [simTier, rent, buildout, peakRate, offPeakRate, lateRate, peakOcc, offPeakOcc, lateOcc,
-      memberPrice, memberCount, memberUtil, memberPeakPct, memberDailyHrs, rampMonths]);
+      memberPrice, memberCount, memberUtil, memberPeakPct, memberDailyHrs, rampMonths, bayCount]);
 
   const profitColor = m.monthlyProfit >= 0 ? "#22c55e" : "#ef4444";
   const memberColor = m.netMemberImpact >= 0 ? "#22c55e" : "#ef4444";
