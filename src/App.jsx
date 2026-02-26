@@ -68,9 +68,10 @@ export default function App() {
     const peakRevMonth = peakBookedHrsDay * peakRate * DAYS;
     const offPeakRevMonth = offPeakBookedHrsDay * offPeakRate * DAYS;
     const lateRevMonth = lateBookedHrsDay * lateRate * DAYS;
-    const hourlyRevGross = peakRevMonth + offPeakRevMonth + lateRevMonth;
+    const hourlyRevGrossPerBay = peakRevMonth + offPeakRevMonth + lateRevMonth;
+    const hourlyRevGross = hourlyRevGrossPerBay * bayCount;
 
-    const membershipRev = memberPrice * memberCount;
+    const membershipRev = memberPrice * memberCount * bayCount;
     const memberHrsPerDayRaw = memberDailyHrs * memberCount * (memberUtil / 100);
     const memberHrsPerDay = Math.min(memberHrsPerDayRaw, 24);
     const capped = memberHrsPerDayRaw > 24;
@@ -80,30 +81,30 @@ export default function App() {
 
     const displacedPeakHrsDay = Math.min(memberPeakHrsDay, peakBookedHrsDay);
     const displacedOffPeakHrsDay = Math.min(memberOffPeakHrsDay, offPeakBookedHrsDay);
-    const displacedRevMonth = (displacedPeakHrsDay * peakRate + displacedOffPeakHrsDay * offPeakRate) * DAYS;
+    const displacedRevMonth = (displacedPeakHrsDay * peakRate + displacedOffPeakHrsDay * offPeakRate) * DAYS * bayCount;
 
     const hourlyRevNet = hourlyRevGross - displacedRevMonth;
     const monthlyRev = hourlyRevNet + membershipRev;
     const netMemberImpact = membershipRev - displacedRevMonth;
 
     const expenses = {
-      rent,
-      utilities: 350,
+      rent: rent * bayCount,
+      utilities: 350 * bayCount,
       internet: 100,
-      insurance: 250,
+      insurance: 200 + 50 * bayCount,
       software: 200,
-      cleaning: 300,
-      maintenance: 150,
+      cleaning: 300 * bayCount,
+      maintenance: 150 * bayCount,
       marketing: 300,
-      misc: 200
+      misc: 200 * bayCount
     };
     const totalMonthlyExp = Object.values(expenses).reduce((a, b) => a + b, 0);
     const monthlyProfit = monthlyRev - totalMonthlyExp;
     const annualProfit = monthlyProfit * 12;
 
     const startup = {
-      simulator: SIM_COST,
-      buildout,
+      simulator: SIM_COST * bayCount,
+      buildout: buildout * bayCount,
       leaseDeposit: rent * 3,
       legal: 3000,
       tech: 2500,
