@@ -202,7 +202,12 @@ export default function App() {
           </Section>
 
           <Section title="Space & Buildout">
-            <Slider label="Monthly Rent" value={rent} onChange={setRent} min={1000} max={8000} step={100} format={$} />
+            <Slider label="Base Rent ($/sqft/yr)" value={rentPerSqft} onChange={setRentPerSqft} min={5} max={80} step={1} format={v => `$${v}/sqft`} />
+            <Slider label="Square Footage" value={sqft} onChange={setSqft} min={200} max={3000} step={50} format={v => `${v.toLocaleString()} sqft`} />
+            <Slider label="NNN ($/sqft/yr)" value={nnnPerSqft} onChange={setNnnPerSqft} min={0} max={20} step={0.5} format={v => `$${v}/sqft`} />
+            <div style={{ background: "#1e293b", padding: 10, borderRadius: 8, marginTop: 8 }}>
+              <Row label="Monthly Rent (base + NNN)" value={$(m.totalMonthlyRent)} bold color="#f1f5f9" />
+            </div>
             <Slider label="Buildout Cost" value={buildout} onChange={setBuildout} min={5000} max={60000} step={1000} format={$k} />
           </Section>
 
