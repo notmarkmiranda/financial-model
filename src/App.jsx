@@ -31,7 +31,9 @@ const $k = v => v >= 1000 ? `$${(v / 1000).toFixed(1)}K` : $(v);
 
 export default function App() {
   const [simTier, setSimTier] = useState("mid");
-  const [rent, setRent] = useState(2000);
+  const [rentPerSqft, setRentPerSqft] = useState(25);
+  const [sqft, setSqft] = useState(800);
+  const [nnnPerSqft, setNnnPerSqft] = useState(5);
   const [buildout, setBuildout] = useState(25000);
   const [peakRate, setPeakRate] = useState(55);
   const [offPeakRate, setOffPeakRate] = useState(30);
@@ -155,7 +157,7 @@ export default function App() {
       blendedOcc, totalBookedHrsDay: totalBookedHrsDay.toFixed(1),
       cashFlow
     };
-  }, [simTier, rent, buildout, peakRate, offPeakRate, lateRate, peakOcc, offPeakOcc, lateOcc,
+  }, [simTier, rentPerSqft, sqft, nnnPerSqft, buildout, peakRate, offPeakRate, lateRate, peakOcc, offPeakOcc, lateOcc,
       memberPrice, memberCount, memberUtil, memberPeakPct, memberDailyHrs, rampMonths, bayCount]);
 
   const profitColor = m.monthlyProfit >= 0 ? "#22c55e" : "#ef4444";
