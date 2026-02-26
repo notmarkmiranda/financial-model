@@ -129,7 +129,7 @@ export default function App() {
 
     const blendedRate = totalBookedHrsDay > 0 ? hourlyRevGrossPerBay / (totalBookedHrsDay * DAYS) : 0;
     const expenseGap = Math.max(0, totalMonthlyExp - membershipRev);
-    const breakEvenHrsMonth = blendedRate > 0 ? expenseGap / blendedRate : Infinity;
+    const breakEvenHrsMonth = blendedRate > 0 ? expenseGap / (blendedRate * bayCount) : Infinity;
     const breakEvenHrsDay = breakEvenHrsMonth / DAYS;
     const breakEvenOccPct = (breakEvenHrsDay / 24) * 100;
 
