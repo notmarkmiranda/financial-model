@@ -164,10 +164,27 @@ export default function App() {
   return (
     <div style={{ background: "#0f172a", color: "#e2e8f0", minHeight: "100vh", padding: 24, fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
       <h1 style={{ fontSize: 22, fontWeight: 700, color: "#f1f5f9", marginBottom: 4 }}>Golf Simulator Financial Model</h1>
-      <p style={{ fontSize: 13, color: "#64748b", marginBottom: 24 }}>1 Bay, 24-Hour Self-Serve Operation</p>
+      <p style={{ fontSize: 13, color: "#64748b", marginBottom: 24 }}>{bayCount} {bayCount === 1 ? "Bay" : "Bays"}, 24-Hour Self-Serve Operation</p>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 24 }}>
         <div>
+          <Section title="Number of Bays">
+  <div style={{ display: "flex", gap: 8, marginBottom: 4 }}>
+    {[1, 2, 3].map(n => (
+      <button key={n} onClick={() => setBayCount(n)}
+        style={{
+          padding: "8px 14px", borderRadius: 8,
+          border: bayCount === n ? "2px solid #22c55e" : "1px solid #334155",
+          background: bayCount === n ? "#14532d" : "#1e293b",
+          color: bayCount === n ? "#22c55e" : "#94a3b8",
+          fontSize: 13, fontWeight: 600, cursor: "pointer", flex: 1
+        }}>
+        {n} {n === 1 ? "Bay" : "Bays"}
+      </button>
+    ))}
+  </div>
+</Section>
+
           <Section title="Simulator Tier">
             <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
               {Object.entries(simTiers).map(([k, v]) => (
