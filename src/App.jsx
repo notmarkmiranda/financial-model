@@ -127,7 +127,7 @@ export default function App() {
       }
     }
 
-    const blendedRate = totalBookedHrsDay > 0 ? hourlyRevGross / (totalBookedHrsDay * DAYS) : 0;
+    const blendedRate = totalBookedHrsDay > 0 ? hourlyRevGrossPerBay / (totalBookedHrsDay * DAYS) : 0;
     const expenseGap = Math.max(0, totalMonthlyExp - membershipRev);
     const breakEvenHrsMonth = blendedRate > 0 ? expenseGap / blendedRate : Infinity;
     const breakEvenHrsDay = breakEvenHrsMonth / DAYS;
