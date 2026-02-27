@@ -74,17 +74,18 @@ export default function App() {
     const hourlyRevGrossPerBay = peakRevMonth + offPeakRevMonth + lateRevMonth;
     const hourlyRevGross = hourlyRevGrossPerBay * bayCount;
 
-    const membershipRev = memberPrice * memberCount * bayCount;
+    const membershipRev = memberPrice * memberCount;
     const memberHrsPerDayRaw = memberDailyHrs * memberCount * (memberUtil / 100);
-    const memberHrsPerDay = Math.min(memberHrsPerDayRaw, 24);
-    const capped = memberHrsPerDayRaw > 24;
+    const memberHrsPerDay = Math.min(memberHrsPerDayRaw, bayCount * 24);
+    const capped = memberHrsPerDayRaw > bayCount * 24;
 
     const memberPeakHrsDay = memberHrsPerDay * (memberPeakPct / 100);
     const memberOffPeakHrsDay = memberHrsPerDay * (1 - memberPeakPct / 100);
 
-    const displacedPeakHrsDay = Math.min(memberPeakHrsDay, peakBookedHrsDay);
-    const displacedOffPeakHrsDay = Math.min(memberOffPeakHrsDay, offPeakBookedHrsDay);
-    const displacedRevMonth = (displacedPeakHrsDay * peakRate + displacedOffPeakHrsDay * offPeakRate) * DAYS * bayCount;
+    // Compare member demand against total capacity across all bays
+    const displacedPeakHrsDay = Math.min(memberPeakHrsDay, peakBookedHrsDay * bayCount);
+    const displacedOffPeakHrsDay = Math.min(memberOffPeakHrsDay, offPeakBookedHrsDay * bayCount);
+    const displacedRevMonth = (displacedPeakHrsDay * peakRate + displacedOffPeakHrsDay * offPeakRate) * DAYS;
 
     const hourlyRevNet = hourlyRevGross - displacedRevMonth;
     const monthlyRev = hourlyRevNet + membershipRev;
@@ -132,8 +133,8 @@ export default function App() {
 
     const blendedRate = totalBookedHrsDay > 0 ? hourlyRevGrossPerBay / (totalBookedHrsDay * DAYS) : 0;
     const expenseGap = Math.max(0, totalMonthlyExp - membershipRev);
-    const breakEvenHrsMonth = blendedRate > 0 ? expenseGap / (blendedRate * bayCount) : Infinity;
-    const breakEvenHrsDay = breakEvenHrsMonth / DAYS / bayCount;
+    // Per-bay hours needed: total gap divided by all bays' earning power
+    const breakEvenHrsDay = blendedRate > 0 ? expenseGap / (blendedRate * bayCount * DAYS) : Infinity;
     const breakEvenOccPct = (breakEvenHrsDay / 24) * 100;
 
     const blendedOcc = ((PEAK_HRS * peakOcc + OFFPEAK_HRS * offPeakOcc + LATE_HRS * lateOcc) / 24).toFixed(0);
@@ -208,7 +209,9 @@ export default function App() {
             <div style={{ background: "#1e293b", padding: 10, borderRadius: 8, marginTop: 8 }}>
               <Row label="Monthly Rent (base + NNN)" value={$(m.totalMonthlyRent)} bold color="#f1f5f9" />
             </div>
-            <Slider label="Buildout Cost" value={buildout} onChange={setBuildout} min={5000} max={60000} step={1000} format={$k} />
+            <div style={{ marginTop: 20 }}>
+              <Slider label="Buildout Cost (per bay)" value={buildout} onChange={setBuildout} min={5000} max={60000} step={1000} format={$k} />
+            </div>
           </Section>
 
           <Section title="Hourly Rates">
@@ -223,7 +226,8 @@ export default function App() {
             <Slider label="Late Night" value={lateOcc} onChange={setLateOcc} min={0} max={100} step={5} format={v => `${v}%`} />
             <div style={{ background: "#1e293b", padding: 10, borderRadius: 8, marginTop: 8 }}>
               <Row label="Blended occupancy" value={`${m.blendedOcc}%`} />
-              <Row label="Booked hours/day" value={`${m.totalBookedHrsDay} of 24`} />
+              <Row label="Booked hrs/day (per bay)" value={`${m.totalBookedHrsDay} of 24`} />
+              {bayCount > 1 && <Row label={`Booked hrs/day (all ${bayCount} bays)`} value={`${(parseFloat(m.totalBookedHrsDay) * bayCount).toFixed(1)} of ${bayCount * 24}`} />}
             </div>
           </Section>
 
@@ -235,7 +239,7 @@ export default function App() {
             <Slider label="% of member hours during peak" value={memberPeakPct} onChange={setMemberPeakPct} min={0} max={100} step={10} format={v => `${v}%`} />
             {memberCount > 0 && (
               <div style={{ background: "#1e293b", padding: 10, borderRadius: 8, marginTop: 8 }}>
-                <Row label="Member hours/day" value={`${m.memberHrsPerDay.toFixed(1)} hrs${m.capped ? ' (capped at 24)' : ''}`} />
+                <Row label="Member hours/day" value={`${m.memberHrsPerDay.toFixed(1)} hrs${m.capped ? ` (capped at ${bayCount * 24})` : ''}`} />
                 <Row label="Membership revenue" value={$(m.membershipRev)} color="#a78bfa" />
                 <Row label="Displaced hourly revenue" value={`-${$(m.displacedRevMonth)}`} color="#f87171" />
                 <div style={{ borderTop: "1px solid #334155", marginTop: 6, paddingTop: 6 }}>
